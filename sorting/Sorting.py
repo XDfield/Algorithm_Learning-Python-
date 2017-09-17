@@ -60,21 +60,45 @@ class Sort:
         '''插入排序'''
         # 排序思想: 取出待排序的元素从左往右遍历插入刚好比对方大的位置
         arr = list(arr)
-        # 设定最后一个已排序的元素位置
-        LSortedElement = 0
         if timing:
             start = time.time()
-        for i in range(len(arr) - 1):
+        for i in range(1, len(arr)): 
             # 待插入元素
-            Extrect_e = arr[LSortedElement + 1]
-            for j in range(LSortedElement + 1)[::-1]:
+            Extrect_e = arr[i]
+            j = i - 1
+            while j >= 0:
                 if Extrect_e <= arr[j]:
                     # 移位
-                    arr[j + 1], arr[j] = arr[j], arr[j + 1]
-                else:
-                    # 插入(实际因为原先移位了相当于插入了)
-                    break
-            LSortedElement += 1
+                    arr[j+1] = arr[j]
+                    arr[j] = Extrect_e
+                j -= 1
+        if timing:
+            self.time = time.time() - start
+        return arr if pattern == '<' else arr[::-1]
+
+    def SHE(self, arr=None, timing=False, pattern='<'):
+        '''希尔排序'''
+        # 排序思想: 插入排序的改进,先分组再插排.直到不能再分.
+        arr = list(arr)
+        if timing:
+            start = time.time()
+        step = 2
+        group_len = len(arr) // step
+        while group_len > 0:
+            for i in range(group_len):
+                j = i + group_len
+                while j < len(arr):
+                    # 待插入元素
+                    Extract_e = arr[j]
+                    k = j - group_len
+                    while k >= 0:
+                        if Extract_e < arr[k]:
+                            # 移位
+                            arr[k+group_len] = arr[k]
+                            arr[k] = Extract_e
+                        k -= group_len
+                    j += group_len
+            group_len //= step
         if timing:
             self.time = time.time() - start
         return arr if pattern == '<' else arr[::-1]
@@ -234,14 +258,15 @@ def RandomList(start=0, stop=50, length=15):
 if __name__ == "__main__":
     sort = Sort()
     # 待排序数组
-    random_list = RandomList(length=30)
+    random_list = RandomList(stop=500, length=200)
     # print('待排序数组:\t'+str(random_list)+'\n')
 
     answer = sorted(random_list)
 
     print('-' * 5 + '测试' + '-' * 5)
     tasks = [sort.BUB, sort.SEL, sort.INS,
-             sort.MER, sort.QUI, sort.RAD, sort.COU]
+             sort.MER, sort.QUI, sort.RAD, 
+             sort.COU, sort.SHE]
     for fn in tasks:
         sorted_list = fn(random_list)
         sorted_result = '通过' if sorted_list == answer else '未通过'
