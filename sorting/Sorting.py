@@ -11,8 +11,10 @@ def find_max_in_list(lists):
             max_e = lists[i]
     return max_e
 
+
 class Sort:
     '''一个调用各排序算法的类'''
+
     def __init__(self):
         self.time = 0
 
@@ -25,14 +27,14 @@ class Sort:
         if timing:
             start = time.time()
         while UnsortedElement:  # 若都排序好则退出
-            for i in range(UnsortedElement-1):
-                if arr[i] > arr[i+1]:
-                    arr[i], arr[i+1] = arr[i+1], arr[i]
+            for i in range(UnsortedElement - 1):
+                if arr[i] > arr[i + 1]:
+                    arr[i], arr[i + 1] = arr[i + 1], arr[i]
             UnsortedElement -= 1
         if timing:
             self.time = time.time() - start
         return arr if pattern == '<' else arr[::-1]
-    
+
     def SEL(self, arr=None, timing=False, pattern='<'):
         '''选择排序'''
         # 排序思想: 选出未排序的元素里最小的数放到前边已排序里
@@ -42,18 +44,18 @@ class Sort:
         if timing:
             start = time.time()
         # 重复(元素个数-1)次:
-        for i in range(len(arr)-1):
+        for i in range(len(arr) - 1):
             # 将第一个未排序的元素记录为最小值
             min_i = UnsortedE_i
-            for j in range(UnsortedE_i+1, len(arr)):
+            for j in range(UnsortedE_i + 1, len(arr)):
                 if arr[min_i] > arr[j]:
-                    min_i = j 
+                    min_i = j
             arr[UnsortedE_i], arr[min_i] = arr[min_i], arr[UnsortedE_i]
             UnsortedE_i += 1
         if timing:
             self.time = time.time() - start
         return arr if pattern == '<' else arr[::-1]
-        
+
     def INS(self, arr=None, timing=False, pattern='<'):
         '''插入排序'''
         # 排序思想: 取出待排序的元素从左往右遍历插入刚好比对方大的位置
@@ -62,13 +64,13 @@ class Sort:
         LSortedElement = 0
         if timing:
             start = time.time()
-        for i in range(len(arr)-1):
+        for i in range(len(arr) - 1):
             # 待插入元素
-            Extrect_e = arr[LSortedElement+1]
-            for j in range(LSortedElement+1)[::-1]:
+            Extrect_e = arr[LSortedElement + 1]
+            for j in range(LSortedElement + 1)[::-1]:
                 if Extrect_e <= arr[j]:
                     # 移位
-                    arr[j+1], arr[j] = arr[j], arr[j+1]
+                    arr[j + 1], arr[j] = arr[j], arr[j + 1]
                 else:
                     # 插入(实际因为原先移位了相当于插入了)
                     break
@@ -81,12 +83,12 @@ class Sort:
         '''归并排序'''
         # 排序思想: 想分后治.先拆散各自与相邻的比对再相邻得组合.多采用递归的思路.
         arr = list(arr)
-        
+
         def merge(left, right):
             '''用于两个序列的有序合并'''
             i, j = 0, 0
             result = []
-            while i<len(left) and j<len(right):
+            while i < len(left) and j < len(right):
                 if left[i] < right[j]:
                     result.append(left[i])
                     i += 1
@@ -103,8 +105,8 @@ class Sort:
             # 若数组长度小于或等于1则不用细分了
             if len(lists) <= 1:
                 return lists
-            num = len(lists)//2
-            # 数组拆分        
+            num = len(lists) // 2
+            # 数组拆分
             left = merge_sort(lists[:num])
             right = merge_sort(lists[num:])
             # 数组合并
@@ -122,7 +124,7 @@ class Sort:
         # 若RQ=True则为随机化快速排序
         # 排序思想: 取基准数将数组化为(比它小的数 基准数 比它大的数),再递归
         arr = list(arr)
-        
+
         def quick(lists, left, right, RQ=False):
             '''快速排序主逻辑'''
             if left >= right:
@@ -144,12 +146,12 @@ class Sort:
             # 左右探测点相遇后将基准点与相遇点互换
             lists[Base], lists[right] = lists[right], lists[Base]
             # 对基准点左右两边也进行排序
-            quick(lists, low, right-1, RQ=RQ)
-            quick(lists, right+1, high, RQ=RQ)
+            quick(lists, low, right - 1, RQ=RQ)
+            quick(lists, right + 1, high, RQ=RQ)
             return lists
         if timing:
             start = time.time()
-        result = quick(arr, 0, len(arr)-1, RQ=RQ)
+        result = quick(arr, 0, len(arr) - 1, RQ=RQ)
         if timing:
             self.time = time.time() - start
         return result if pattern == '<' else result[::-1]
@@ -163,10 +165,10 @@ class Sort:
         # 找出数组里的最大值
         max_e = find_max_in_list(arr)
         # 初始化统计数组(长度为待排序数组里最大值+1)(因为还有个0)
-        count_list = [0]*(max_e+1)
+        count_list = [0] * (max_e + 1)
         for j in range(len(arr)):
             count_list[arr[j]] += 1
-        
+
         result = []
         for k in range(len(count_list)):
             if count_list[k] == 0:
@@ -209,6 +211,7 @@ class Sort:
             self.time = time.time() - start
         return result if pattern == '<' else result[::-1]
 
+
 def RandomList(start=0, stop=50, length=15):
     '''
     生成随机数组
@@ -227,6 +230,7 @@ def RandomList(start=0, stop=50, length=15):
         random_list.append(random.randint(start, stop))
     return random_list
 
+
 if __name__ == "__main__":
     sort = Sort()
     # 待排序数组
@@ -235,9 +239,10 @@ if __name__ == "__main__":
 
     answer = sorted(random_list)
 
-    print('-'*5+'测试'+'-'*5)
-    tasks = [sort.BUB, sort.SEL, sort.INS, sort.MER, sort.QUI, sort.RAD, sort.COU]
+    print('-' * 5 + '测试' + '-' * 5)
+    tasks = [sort.BUB, sort.SEL, sort.INS,
+             sort.MER, sort.QUI, sort.RAD, sort.COU]
     for fn in tasks:
         sorted_list = fn(random_list)
-        sorted_result = '通过' if sorted_list==answer else '未通过'
-        print(fn.__doc__+': '+sorted_result)
+        sorted_result = '通过' if sorted_list == answer else '未通过'
+        print(fn.__doc__ + ': ' + sorted_result)
