@@ -22,3 +22,7 @@ sort = Sort()
 sorted_list = sort.BUB(unsorted_list)  # 冒泡排序
 ```  
 各排序算法已检验通过.
+
+---
+### 二叉树
+**Order.py**: 二叉树的前序,中序,后序遍历.
